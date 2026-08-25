@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Share Your Experience</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#f4f7fb;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:30px 15px;
+    }
+
+    .container{
+      width:100%;
+      max-width:650px;
+      background:white;
+      padding:40px;
+      border-radius:25px;
+      box-shadow:0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    h1{
+      text-align:center;
+      color:#052135;
+      margin-bottom:10px;
+      font-size:2.2rem;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#666;
+      margin-bottom:35px;
+      font-size:15px;
+      line-height:1.6;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      color:#222;
+      font-weight:500;
+    }
+
+    input,
+    textarea{
+      width:100%;
+      padding:15px;
+      margin-bottom:22px;
+      border-radius:12px;
+      border:1px solid #d9d9d9;
+      font-size:16px;
+      outline:none;
+      transition:0.3s;
+      font-family:inherit;
+      resize:vertical;
+    }
+
+    input:focus,
+    textarea:focus{
+      border-color:#00b894;
+      box-shadow:0 0 0 4px rgba(0,184,148,0.1);
+    }
+
+    .star-rating{
+      display:flex;
+      gap:8px;
+      font-size:2.2rem;
+      margin-bottom:22px;
+      justify-content:center;
+    }
+
+    .star-rating span{
+      cursor:pointer;
+      color:#ddd;
+      transition:0.2s;
+    }
+
+    .star-rating span.active{
+      color:#f5b301;
+    }
+
+    button{
+      width:100%;
+      padding:16px;
+      background:#00b894;
+      color:white;
+      border:none;
+      border-radius:14px;
+      font-size:18px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      background:#019875;
+    }
+
+    button:disabled{
+      background:#999;
+      cursor:not-allowed;
+    }
+
+    .info-box{
+      background:#f8fbff;
+      border:1px solid #e5eef8;
+      padding:20px;
+      border-radius:16px;
+      margin-bottom:25px;
+    }
+
+    .info-box p{
+      color:#555;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .back-link{
+      display:block;
+      text-align:center;
+      margin-top:20px;
+      color:#0a3d62;
+      font-weight:500;
+      text-decoration:none;
+      font-size:14px;
+    }
+
+    .back-link:hover{
+      color:#00b894;
+    }
+
+    @media(max-width:768px){
+
+      .container{
+        padding:25px;
+      }
+
+      h1{
+        font-size:1.8rem;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Share Your Experience</h1>
+
+  <p class="subtitle">
+    Stayed with us at Mountain Reverie? We'd love to hear about it.
+  </p>
+
+  <form id="reviewForm">
+
+    <label>Your Rating</label>
+
+    <div class="star-rating" id="starRating">
+      <span data-value="1">★</span>
+      <span data-value="2">★</span>
+      <span data-value="3">★</span>
+      <span data-value="4">★</span>
+      <span data-value="5">★</span>
+    </div>
+
+    <label>Your Name</label>
+
+    <input
+      type="text"
+      id="name"
+      placeholder="Enter your full name"
+      required
+    >
+
+    <label>Your Review</label>
+
+    <textarea
+      id="comment"
+      rows="5"
+      placeholder="Tell us about your stay..."
+      required
+    ></textarea>
+
+    <div class="info-box">
+
+      <p>
+        Your review will be checked by our team before it appears on the site. Thank you for taking the time to share your stay with us.
+      </p>
+
+    </div>
+
+    <button
+      type="submit"
+      id="submitBtn"
+    >
+      Submit Review
+    </button>
+
+  </form>
+
+  <a href="index.html" class="back-link">
+    ← Back to Home
+  </a>
+
+</div>
+
+<script>
+
+const form = document.getElementById('reviewForm');
+const submitBtn = document.getElementById('submitBtn');
+const stars = document.querySelectorAll('#starRating span');
+
+let selectedRating = 0;
+
+// STAR SELECTION
+
+stars.forEach(star => {
+
+  star.addEventListener('click', () => {
+
+    selectedRating = parseInt(star.dataset.value);
+
+    stars.forEach(s => {
+
+      s.classList.toggle(
+        'active',
+        parseInt(s.dataset.value) <= selectedRating
+      );
+
+    });
+
+  });
+
+});
+
+// FORM SUBMIT
+
+form.addEventListener('submit', async (e) => {
+
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const comment = document.getElementById('comment').value.trim();
+
+  if(selectedRating === 0){
+
+    alert('Please select a star rating.');
+    return;
+
+  }
+
+  const reviewData = {
+
+    name,
+    rating: selectedRating,
+    comment
+
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.innerText = 'Submitting...';
+
+  try {
+
+    const response = await fetch('/submit-review', {
+
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify(reviewData)
+
+    });
+
+    const result = await response.json();
+
+    if(result.success){
+
+      alert('Thank you! Your review has been submitted and will appear once approved.');
+
+      form.reset();
+      selectedRating = 0;
+      stars.forEach(s => s.classList.remove('active'));
+
+    } else {
+
+      alert('Something went wrong. Please try again.');
+
+    }
+
+  } catch(error){
+
+    console.log(error);
+
+    alert('Server error. Please try again later.');
+
+  }
+
+  submitBtn.disabled = false;
+  submitBtn.innerText = 'Submit Review';
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Reserve Your Stay</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#f4f7fb;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:30px 15px;
+    }
+
+    .container{
+      width:100%;
+      max-width:650px;
+      background:white;
+      padding:40px;
+      border-radius:25px;
+      box-shadow:0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    h1{
+      text-align:center;
+      color:#052135;
+      margin-bottom:10px;
+      font-size:2.2rem;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#666;
+      margin-bottom:35px;
+      font-size:15px;
+      line-height:1.6;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      color:#222;
+      font-weight:500;
+    }
+
+    input{
+      width:100%;
+      padding:15px;
+      margin-bottom:22px;
+      border-radius:12px;
+      border:1px solid #d9d9d9;
+      font-size:16px;
+      outline:none;
+      transition:0.3s;
+    }
+
+    input:focus{
+      border-color:#00b894;
+      box-shadow:0 0 0 4px rgba(0,184,148,0.1);
+    }
+
+    button{
+      width:100%;
+      padding:16px;
+      background:#00b894;
+      color:white;
+      border:none;
+      border-radius:14px;
+      font-size:18px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      background:#019875;
+    }
+
+    button:disabled{
+      background:#999;
+      cursor:not-allowed;
+    }
+
+    .info-box{
+      background:#f8fbff;
+      border:1px solid #e5eef8;
+      padding:20px;
+      border-radius:16px;
+      margin-bottom:25px;
+    }
+
+    .info-box h3{
+      margin-bottom:10px;
+      color:#052135;
+    }
+
+    .info-box p{
+      color:#555;
+      font-size:15px;
+      line-height:1.7;
+    }
+
+    @media(max-width:768px){
+
+      .container{
+        padding:25px;
+      }
+
+      h1{
+        font-size:1.8rem;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Reserve Your Stay</h1>
+
+  <p class="subtitle">
+    Fill in your booking details and our team will contact you shortly for confirmation.
+  </p>
+
+  <form id="bookingForm">
+
+    <label>Full Name</label>
+
+    <input
+      type="text"
+      id="name"
+      placeholder="Enter your full name"
+      required
+    >
+
+    <label>Phone Number</label>
+
+    <input
+      type="tel"
+      id="phone"
+      placeholder="Enter 10-digit phone number"
+      maxlength="10"
+      required
+    >
+
+    <label>Check-In Date</label>
+
+    <input
+      type="date"
+      id="checkin"
+      required
+    >
+
+    <label>Check-Out Date</label>
+
+    <input
+      type="date"
+      id="checkout"
+      required
+    >
+
+    <label>Number of Guests</label>
+
+    <input
+      type="number"
+      id="guests"
+      min="1"
+      max="10"
+      placeholder="Enter number of guests"
+      required
+    >
+
+    <div class="info-box">
+
+      <h3>Booking Information</h3>
+
+      <p>
+        Our hotel team will manually review your request and contact you for booking confirmation and room availability.
+      </p>
+
+    </div>
+
+    <button
+      type="submit"
+      id="submitBtn"
+    >
+      Request Booking
+    </button>
+
+  </form>
+
+</div>
+
+<script>
+
+const form =
+document.getElementById('bookingForm');
+
+const submitBtn =
+document.getElementById('submitBtn');
+
+// MINIMUM DATE
+
+const today =
+new Date().toISOString().split('T')[0];
+
+document.getElementById('checkin').min = today;
+document.getElementById('checkout').min = today;
+
+// FORM SUBMIT
+
+form.addEventListener('submit', async (e) => {
+
+  e.preventDefault();
+
+  const name =
+  document.getElementById('name').value.trim();
+
+  const phone =
+  document.getElementById('phone').value.trim();
+
+  const checkin =
+  document.getElementById('checkin').value;
+
+  const checkout =
+  document.getElementById('checkout').value;
+
+  const guests =
+  document.getElementById('guests').value;
+
+  // VALIDATION
+
+  if(phone.length !== 10){
+
+    alert(
+      'Please enter a valid 10-digit phone number.'
+    );
+
+    return;
+  }
+
+  if(checkout <= checkin){
+
+    alert(
+      'Check-out date must be after check-in date.'
+    );
+
+    return;
+  }
+
+  const bookingData = {
+
+    name,
+    phone,
+    checkin,
+    checkout,
+    guests
+
+  };
+
+  submitBtn.disabled = true;
+
+  submitBtn.innerText =
+  'Submitting Request...';
+
+  try {
+
+    const response =
+    await fetch('/book-room', {
+
+      method:'POST',
+
+      headers:{
+        'Content-Type':'application/json'
+      },
+
+      body:JSON.stringify(bookingData)
+
+    });
+
+    const result =
+    await response.json();
+
+    if(result.success){
+
+      alert(
+        'Booking request submitted successfully. Our team will contact you shortly.'
+      );
+
+      form.reset();
+
+    } else {
+
+      alert(
+        'Booking failed. Please try again.'
+      );
+
+    }
+
+  } catch(error){
+
+    console.log(error);
+
+    alert(
+      'Server error. Please try again later.'
+    );
+
+  }
+
+  submitBtn.disabled = false;
+
+  submitBtn.innerText =
+  'Request Booking';
+
+});
+
+</script>
+
+</body>
+</html>

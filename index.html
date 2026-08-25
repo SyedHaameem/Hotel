@@ -1,0 +1,763 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mountain Reverie Doodhpathri</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#f7f9fc;
+      color:#222;
+      line-height:1.7;
+    }
+
+    a{
+      text-decoration:none;
+    }
+
+    img{
+      width:100%;
+      display:block;
+      border-radius:18px;
+    }
+
+    .container{
+      width:90%;
+      max-width:1300px;
+      margin:auto;
+    }
+
+    /* NAVBAR */
+
+    .navbar{
+      position:fixed;
+      top:0;
+      width:100%;
+      padding:20px 50px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:rgba(0,0,0,0.35);
+      backdrop-filter:blur(10px);
+      z-index:1000;
+    }
+
+    .logo{
+      color:white;
+      font-size:1.3rem;
+      font-weight:700;
+    }
+
+    .nav-links a{
+      color:white;
+      margin-left:20px;
+      font-weight:500;
+      transition:0.3s;
+    }
+
+    .nav-links a:hover{
+      color:#00b894;
+    }
+
+    /* HERO */
+
+    header{
+      min-height:100vh;
+      background:
+      linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
+      url('img/dp_doodthpatri.jpg') center/cover no-repeat;
+
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:40px 20px;
+    }
+
+    .hero-content{
+      max-width:850px;
+      margin-top:60px;
+    }
+
+    .hero-content h1{
+      font-size:4rem;
+      margin-bottom:20px;
+      font-weight:700;
+    }
+
+    .hero-content p{
+      font-size:1.1rem;
+      margin-bottom:35px;
+      color:#f1f1f1;
+    }
+
+    .btn-group{
+      display:flex;
+      gap:20px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:14px 30px;
+      border-radius:50px;
+      font-weight:600;
+      transition:0.3s ease;
+      display:inline-block;
+    }
+
+    .btn-primary{
+      background:#00b894;
+      color:white;
+    }
+
+    .btn-primary:hover{
+      background:#019875;
+      transform:translateY(-3px);
+    }
+
+    .btn-secondary{
+      background:white;
+      color:#222;
+    }
+
+    .btn-secondary:hover{
+      background:#ececec;
+      transform:translateY(-3px);
+    }
+
+    /* ABOUT */
+
+    .about{
+      padding:100px 0;
+    }
+
+    .section-title{
+      text-align:center;
+      font-size:2.5rem;
+      margin-bottom:20px;
+      color:#111;
+    }
+
+    .section-subtitle{
+      text-align:center;
+      max-width:800px;
+      margin:auto;
+      color:#666;
+      margin-bottom:50px;
+    }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:40px;
+      align-items:center;
+    }
+
+    .about-text h3{
+      font-size:2rem;
+      margin-bottom:20px;
+      color:#0a3d62;
+    }
+
+    .about-text p{
+      margin-bottom:20px;
+      color:#555;
+    }
+
+    /* FEATURES */
+
+    .features{
+      background:white;
+      padding:100px 0;
+    }
+
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:30px;
+      margin-top:50px;
+    }
+
+    .feature-card{
+      background:#f9fbfd;
+      padding:35px 25px;
+      border-radius:20px;
+      text-align:center;
+      transition:0.3s ease;
+      box-shadow:0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .feature-card:hover{
+      transform:translateY(-8px);
+    }
+
+    .feature-card h3{
+      margin:20px 0 10px;
+      color:#0a3d62;
+    }
+
+    .feature-card p{
+      color:#666;
+      font-size:0.95rem;
+    }
+
+    /* ROOMS */
+
+    .rooms{
+      padding:100px 0;
+    }
+
+    .room-card img{
+      height:220px;
+      object-fit:cover;
+      margin-bottom:20px;
+    }
+
+    .price{
+      font-size:1.2rem;
+      font-weight:700;
+      color:#00b894;
+      margin:15px 0;
+    }
+
+    /* GALLERY */
+
+    .gallery{
+      padding:100px 0;
+    }
+
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:25px;
+      margin-top:50px;
+    }
+
+    .gallery-grid img{
+      height:260px;
+      object-fit:cover;
+      transition:0.4s ease;
+    }
+
+    .gallery-grid img:hover{
+      transform:scale(1.03);
+    }
+
+    /* CONTACT */
+
+    .contact{
+      background:#0a3d62;
+      color:white;
+      padding:90px 20px;
+      text-align:center;
+    }
+
+    .contact h2{
+      font-size:2.5rem;
+      margin-bottom:20px;
+    }
+
+    .contact p{
+      margin-bottom:15px;
+      color:#dbe6f0;
+    }
+
+    .contact .btn-primary{
+      margin-top:25px;
+    }
+
+    /* REVIEWS */
+
+    .reviews{
+      background:white;
+      padding:100px 0;
+    }
+
+    .review-summary{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:15px;
+      margin-bottom:50px;
+      flex-wrap:wrap;
+    }
+
+    .review-summary .score{
+      font-size:3rem;
+      font-weight:700;
+      color:#0a3d62;
+    }
+
+    .review-summary .stars{
+      color:#f5b301;
+      font-size:1.4rem;
+      letter-spacing:2px;
+    }
+
+    .review-summary .count{
+      color:#777;
+      font-size:0.95rem;
+    }
+
+    .reviews-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:30px;
+      margin-bottom:45px;
+    }
+
+    .review-card{
+      background:#f9fbfd;
+      padding:30px;
+      border-radius:20px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .review-card .stars{
+      color:#f5b301;
+      letter-spacing:2px;
+      margin-bottom:12px;
+    }
+
+    .review-card p.comment{
+      color:#444;
+      margin-bottom:18px;
+      font-size:0.97rem;
+    }
+
+    .review-card .reviewer{
+      font-weight:600;
+      color:#0a3d62;
+      font-size:0.9rem;
+    }
+
+    .reviews-empty{
+      text-align:center;
+      color:#888;
+      padding:20px 0 45px;
+    }
+
+    .reviews-cta{
+      text-align:center;
+    }
+
+    /* FOOTER */
+
+    footer{
+      background:#05141f;
+      color:#aaa;
+      text-align:center;
+      padding:25px 20px;
+      font-size:0.95rem;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px){
+
+      .navbar{
+        padding:15px 20px;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .nav-links a{
+        margin:0 10px;
+      }
+
+      .hero-content h1{
+        font-size:2.6rem;
+      }
+
+      .section-title{
+        font-size:2rem;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav class="navbar">
+
+    <div class="logo">
+      Mountain Reverie
+    </div>
+
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#rooms">Rooms</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+  </nav>
+
+  <!-- HERO -->
+
+  <header>
+
+    <div class="hero-content">
+
+      <h1>Mountain Reverie Doodhpathri</h1>
+
+      <p>
+        Experience luxury, peace, and breathtaking mountain views in the heart of Doodhpathri, Jammu & Kashmir.
+      </p>
+
+      <div class="btn-group">
+
+        <a href="book_accommodation.html" class="btn btn-primary">
+          Book Now
+        </a>
+
+        <a href="#gallery" class="btn btn-secondary">
+          View Gallery
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- ABOUT -->
+
+  <section class="about container" id="about">
+
+    <h2 class="section-title">
+      Welcome to Mountain Reverie
+    </h2>
+
+    <p class="section-subtitle">
+      Nestled in the scenic beauty of Trajikhal Riyar, Doodhpathri, our guest house offers comfort, elegance, and unforgettable natural surroundings.
+    </p>
+
+    <div class="about-grid">
+
+      <img src="img/dp_pic2.jpg" alt="Guest House">
+
+      <div class="about-text">
+
+        <h3>Your Home in the Mountains</h3>
+
+        <p>
+          Enjoy modern rooms, peaceful surroundings, delicious local hospitality, and mesmerizing views of Kashmir’s green valleys.
+        </p>
+
+        <p>
+          Whether you are traveling with family, friends, or solo, Mountain Reverie offers a warm and memorable experience.
+        </p>
+
+        <a href="book_accommodation.html" class="btn btn-primary">
+          Reserve Your Stay
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FEATURES -->
+
+  <section class="features">
+
+    <div class="container">
+
+      <h2 class="section-title">Why Choose Us?</h2>
+
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <h3>Scenic Views</h3>
+          <p>Wake up to stunning mountain landscapes and peaceful natural beauty.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Comfortable Rooms</h3>
+          <p>Spacious and clean rooms designed for a relaxing and comfortable stay.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Family Friendly</h3>
+          <p>Perfect accommodation for families, couples, and groups of travelers.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Easy Booking</h3>
+          <p>Quick and simple reservation process with direct contact support.</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ROOMS -->
+
+  <section class="rooms container" id="rooms">
+
+    <h2 class="section-title">Our Rooms</h2>
+
+    <div class="features-grid">
+
+      <div class="feature-card room-card">
+
+        <img src="img/dp_pic8.jpg" alt="Deluxe Room">
+
+        <h3>Deluxe Room</h3>
+
+        <p>
+          Comfortable deluxe room with scenic mountain views.
+        </p>
+
+        <div class="price">
+          ₹3,500 / Night
+        </div>
+
+        <a href="book_accommodation.html" class="btn btn-primary">
+          Book Now
+        </a>
+
+      </div>
+
+      <div class="feature-card room-card">
+
+        <img src="img/dp_pic5.jpg" alt="Family Suite">
+
+        <h3>Family Suite</h3>
+
+        <p>
+          Spacious suite perfect for families and groups.
+        </p>
+
+        <div class="price">
+          ₹4,500 / Night
+        </div>
+
+        <a href="book_accommodation.html" class="btn btn-primary">
+          Book Now
+        </a>
+
+      </div>
+
+      <div class="feature-card room-card">
+
+        <img src="img/dp_pic7.jpg" alt="Luxury Room">
+
+        <h3>Luxury Room</h3>
+
+        <p>
+          Premium luxury stay with elegant interiors.
+        </p>
+
+        <div class="price">
+          ₹5,500 / Night
+        </div>
+
+        <a href="book_accommodation.html" class="btn btn-primary">
+          Book Now
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- GALLERY -->
+
+  <section class="gallery container" id="gallery">
+
+    <h2 class="section-title">Explore Our Gallery</h2>
+
+    <div class="gallery-grid">
+
+      <img src="img/dp_pic1.jpg" alt="Scenic View">
+      <img src="img/dp_pic3.jpg" alt="Mountain Landscape">
+      <img src="img/dp_pic4.jpg" alt="Hotel Exterior">
+      <img src="img/dp_pic5.jpg" alt="Room Image">
+      <img src="img/dp_pic6.jpg" alt="Guest Room">
+      <img src="img/dp_pic7.jpg" alt="Interior Design">
+      <img src="img/dp_pic8.jpg" alt="Luxury Stay">
+      <img src="img/dp_pic10.jpg" alt="Comfort Room">
+      <img src="img/dp_pic11.jpg" alt="Nature Around Hotel">
+
+    </div>
+
+  </section>
+
+  <!-- REVIEWS -->
+
+  <section class="reviews container" id="reviews">
+
+    <h2 class="section-title">Guest Experiences</h2>
+
+    <p class="section-subtitle">
+      Real stories from the people who've stayed with us in Doodhpathri.
+    </p>
+
+    <div class="review-summary" id="reviewSummary" style="display:none;">
+      <div class="score" id="reviewScore">-</div>
+      <div>
+        <div class="stars" id="reviewStars"></div>
+        <div class="count" id="reviewCount"></div>
+      </div>
+    </div>
+
+    <div class="reviews-grid" id="reviewsGrid"></div>
+
+    <p class="reviews-empty" id="reviewsEmpty" style="display:none;">
+      No reviews yet — be the first to share your stay with us.
+    </p>
+
+    <div class="reviews-cta">
+      <a href="leave_review.html" class="btn btn-primary">
+        Share Your Experience
+      </a>
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+
+  <section class="contact" id="contact">
+
+    <h2>Book Your Dream Stay Today</h2>
+
+    <p>
+      Trajikhal Riyar, Doodhpathri, Budgam, Jammu & Kashmir - 191111
+    </p>
+
+    <p>
+      Phone: +91 9797818481
+    </p>
+
+    <a href="book_accommodation.html" class="btn btn-primary">
+      Book Accommodation
+    </a>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <p>
+      © 2026 Mountain Reverie Doodhpathri. All Rights Reserved.
+    </p>
+  </footer>
+
+  <script>
+
+    // LOAD APPROVED REVIEWS
+
+    function starString(rating){
+
+      const full = '★'.repeat(rating);
+      const empty = '☆'.repeat(5 - rating);
+
+      return full + empty;
+
+    }
+
+    function escapeHtml(text){
+
+      const div = document.createElement('div');
+      div.innerText = text;
+
+      return div.innerHTML;
+
+    }
+
+    async function loadReviews(){
+
+      try {
+
+        const response = await fetch('/reviews');
+        const reviews = await response.json();
+
+        const grid = document.getElementById('reviewsGrid');
+        const empty = document.getElementById('reviewsEmpty');
+        const summary = document.getElementById('reviewSummary');
+
+        grid.innerHTML = '';
+
+        if(reviews.length === 0){
+
+          empty.style.display = 'block';
+          summary.style.display = 'none';
+
+          return;
+
+        }
+
+        empty.style.display = 'none';
+        summary.style.display = 'flex';
+
+        const avg =
+        reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+        document.getElementById('reviewScore').innerText = avg.toFixed(1);
+        document.getElementById('reviewStars').innerText = starString(Math.round(avg));
+        document.getElementById('reviewCount').innerText =
+        `Based on ${reviews.length} review${reviews.length === 1 ? '' : 's'}`;
+
+        reviews.slice(0, 6).forEach(review => {
+
+          grid.innerHTML += `
+
+            <div class="review-card">
+
+              <div class="stars">${starString(review.rating)}</div>
+
+              <p class="comment">"${escapeHtml(review.comment)}"</p>
+
+              <div class="reviewer">${escapeHtml(review.name)}</div>
+
+            </div>
+
+          `;
+
+        });
+
+      } catch(error){
+
+        console.log(error);
+
+      }
+
+    }
+
+    loadReviews();
+
+  </script>
+
+</body>
+</html>
+```
+
+
