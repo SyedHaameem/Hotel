@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -208,14 +210,25 @@
       transform:translateY(-8px);
     }
 
+    .feature-card:not(.room-card):hover{
+      background:#000;
+    }
+
+    .feature-card:not(.room-card):hover h3,
+    .feature-card:not(.room-card):hover p{
+      color:#fff;
+    }
+
     .feature-card h3{
       margin:20px 0 10px;
       color:#0a3d62;
+      transition:0.3s ease;
     }
 
     .feature-card p{
       color:#666;
       font-size:0.95rem;
+      transition:0.3s ease;
     }
 
     /* ROOMS */
@@ -567,7 +580,7 @@
 
       <div class="feature-card room-card">
 
-        <img src="img/dp_pic7.jpg" alt="Luxury Room">
+        <img src="img/dp_pic10.jpg" alt="Luxury Room">
 
         <h3>Luxury Room</h3>
 
@@ -669,6 +682,11 @@
     <p>
       © 2026 Mountain Reverie Doodhpathri. All Rights Reserved.
     </p>
+    <p style="margin-top:8px;">
+      <a href="admin.html" style="color:#666;font-size:0.8rem;">
+        Staff Login
+      </a>
+    </p>
   </footer>
 
   <script>
@@ -759,5 +777,3 @@
 </body>
 </html>
 ```
-
-
