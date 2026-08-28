@@ -1,3 +1,7 @@
+
+
+
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -7,6 +11,53 @@ require('dotenv').config();
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
+// =======================
+// TWILIO (SMS notifications)
+// =======================
+// Set these in your .env file:
+// TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, ADMIN_PHONE_NUMBER
+// If these aren't set, the site still works fine - it just skips sending SMS.
+
+let twilioClient = null;
+
+if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
+
+  const twilio = require('twilio');
+  twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+}
+
+async function notifyAdminOfBooking(booking) {
+
+  if (!twilioClient || !process.env.TWILIO_PHONE_NUMBER || !process.env.ADMIN_PHONE_NUMBER) {
+
+    console.log('Twilio not configured - skipping SMS notification.');
+    return;
+
+  }
+
+  try {
+
+    await twilioClient.messages.create({
+
+      body: `New booking request!\nName: ${booking.name}\nPhone: ${booking.phone}\nCheck-in: ${booking.checkin}\nCheck-out: ${booking.checkout}\nGuests: ${booking.guests}\n\nCheck admin panel to confirm.`,
+
+      from: process.env.TWILIO_PHONE_NUMBER,
+
+      to: process.env.ADMIN_PHONE_NUMBER
+
+    });
+
+    console.log('SMS notification sent to admin.');
+
+  } catch (error) {
+
+    console.log('Failed to send SMS notification:', error.message);
+
+  }
+
+}
 
 // =======================
 // ADMIN CREDENTIALS
@@ -158,6 +209,9 @@ app.post('/book-room', async (req, res) => {
     });
 
     await booking.save();
+
+    // Fire off SMS notification (doesn't block or fail the booking if SMS fails)
+    notifyAdminOfBooking(booking);
 
     res.json({
 
