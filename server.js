@@ -1,7 +1,4 @@
 
-
-
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -13,47 +10,68 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // =======================
-// TWILIO (SMS notifications)
+// TELEGRAM (booking notifications)
 // =======================
 // Set these in your .env file:
-// TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, ADMIN_PHONE_NUMBER
-// If these aren't set, the site still works fine - it just skips sending SMS.
-
-let twilioClient = null;
-
-if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
-
-  const twilio = require('twilio');
-  twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
-}
+// TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+// If these aren't set, the site still works fine - it just skips sending the notification.
 
 async function notifyAdminOfBooking(booking) {
 
-  if (!twilioClient || !process.env.TWILIO_PHONE_NUMBER || !process.env.ADMIN_PHONE_NUMBER) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
 
-    console.log('Twilio not configured - skipping SMS notification.');
+  if (!token || !chatId) {
+
+    console.log('Telegram not configured - skipping notification.');
     return;
 
   }
 
+  const message =
+  `🔔 New booking request!\n\n` +
+  `Name: ${booking.name}\n` +
+  `Phone: ${booking.phone}\n` +
+  `Check-in: ${booking.checkin}\n` +
+  `Check-out: ${booking.checkout}\n` +
+  `Guests: ${booking.guests}\n\n` +
+  `Check the admin panel to confirm.`;
+
   try {
 
-    await twilioClient.messages.create({
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
 
-      body: `New booking request!\nName: ${booking.name}\nPhone: ${booking.phone}\nCheck-in: ${booking.checkin}\nCheck-out: ${booking.checkout}\nGuests: ${booking.guests}\n\nCheck admin panel to confirm.`,
+      method: 'POST',
 
-      from: process.env.TWILIO_PHONE_NUMBER,
+      headers: {
+        'Content-Type': 'application/json'
+      },
 
-      to: process.env.ADMIN_PHONE_NUMBER
+      body: JSON.stringify({
+
+        chat_id: chatId,
+
+        text: message
+
+      })
 
     });
 
-    console.log('SMS notification sent to admin.');
+    const result = await response.json();
+
+    if (result.ok) {
+
+      console.log('Telegram notification sent to admin.');
+
+    } else {
+
+      console.log('Telegram API rejected the message:', result.description);
+
+    }
 
   } catch (error) {
 
-    console.log('Failed to send SMS notification:', error.message);
+    console.log('Failed to send Telegram notification:', error.message);
 
   }
 
@@ -210,7 +228,7 @@ app.post('/book-room', async (req, res) => {
 
     await booking.save();
 
-    // Fire off SMS notification (doesn't block or fail the booking if SMS fails)
+    // Fire off Telegram notification (doesn't block or fail the booking if it fails)
     notifyAdminOfBooking(booking);
 
     res.json({
