@@ -1,5 +1,4 @@
 
-
 {
   "name": "hotel-booking-system",
   "version": "1.0.0",
@@ -15,7 +14,6 @@
     "fs-extra": "^11.2.0",
     "mongodb": "^7.2.0",
     "mongoose": "^9.6.2",
-    "nodemailer": "^6.9.14",
     "twilio": "^6.0.2"
   }
 }

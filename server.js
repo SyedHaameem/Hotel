@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
@@ -10,35 +9,19 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // =======================
-// EMAIL (booking notifications)
+// EMAIL (booking notifications, via Resend)
 // =======================
 // Set these in your .env file:
-// EMAIL_USER, EMAIL_PASS (a Gmail "app password", not your normal password), ADMIN_EMAIL
+// RESEND_API_KEY, ADMIN_EMAIL
 // If these aren't set, the site still works fine - it just skips sending the email.
-
-let mailTransporter = null;
-
-if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-
-  mailTransporter = nodemailer.createTransport({
-
-    service: 'gmail',
-
-    auth: {
-
-      user: process.env.EMAIL_USER,
-
-      pass: process.env.EMAIL_PASS
-
-    }
-
-  });
-
-}
+// Note: Render blocks direct SMTP, so we use Resend's HTTPS API instead of nodemailer/Gmail.
 
 async function emailAdminOfBooking(booking) {
 
-  if (!mailTransporter || !process.env.ADMIN_EMAIL) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const adminEmail = process.env.ADMIN_EMAIL;
+
+  if (!apiKey || !adminEmail) {
 
     console.log('Email not configured - skipping email notification.');
     return;
@@ -47,26 +30,50 @@ async function emailAdminOfBooking(booking) {
 
   try {
 
-    await mailTransporter.sendMail({
+    const response = await fetch('https://api.resend.com/emails', {
 
-      from: `"Mountain Reverie Bookings" <${process.env.EMAIL_USER}>`,
+      method: 'POST',
 
-      to: process.env.ADMIN_EMAIL,
+      headers: {
 
-      subject: `New booking request from ${booking.name}`,
+        'Authorization': `Bearer ${apiKey}`,
 
-      text:
-      `New booking request!\n\n` +
-      `Name: ${booking.name}\n` +
-      `Phone: ${booking.phone}\n` +
-      `Check-in: ${booking.checkin}\n` +
-      `Check-out: ${booking.checkout}\n` +
-      `Guests: ${booking.guests}\n\n` +
-      `Check the admin panel to confirm.`
+        'Content-Type': 'application/json'
+
+      },
+
+      body: JSON.stringify({
+
+        from: 'Mountain Reverie Bookings <onboarding@resend.dev>',
+
+        to: adminEmail,
+
+        subject: `New booking request from ${booking.name}`,
+
+        text:
+        `New booking request!\n\n` +
+        `Name: ${booking.name}\n` +
+        `Phone: ${booking.phone}\n` +
+        `Check-in: ${booking.checkin}\n` +
+        `Check-out: ${booking.checkout}\n` +
+        `Guests: ${booking.guests}\n\n` +
+        `Check the admin panel to confirm.`
+
+      })
 
     });
 
-    console.log('Email notification sent to admin.');
+    const result = await response.json();
+
+    if (response.ok) {
+
+      console.log('Email notification sent to admin.');
+
+    } else {
+
+      console.log('Resend API rejected the message:', result.message || result);
+
+    }
 
   } catch (error) {
 
