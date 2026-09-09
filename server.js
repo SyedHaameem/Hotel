@@ -28,6 +28,8 @@ async function emailAdminOfBooking(booking) {
 
   }
 
+  console.log(`DEBUG - ADMIN_EMAIL exactly as read: [${adminEmail}]`);
+
   try {
 
     const response = await fetch('https://api.resend.com/emails', {
@@ -78,82 +80,6 @@ async function emailAdminOfBooking(booking) {
   } catch (error) {
 
     console.log('Failed to send email notification:', error.message);
-
-  }
-
-
-    if (!apiKey || !adminEmail) {
-
-    console.log('Email not configured - skipping email notification.');
-    return;
-
-  }
-
-}
-
-// =======================
-// TELEGRAM (booking notifications)
-// =======================
-// Set these in your .env file:
-// TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
-// If these aren't set, the site still works fine - it just skips sending the notification.
-
-async function telegramAdminOfBooking(booking) {
-
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-
-  if (!token || !chatId) {
-
-    console.log('Telegram not configured - skipping notification.');
-    return;
-
-  }
-
-  const message =
-  `🔔 New booking request!\n\n` +
-  `Name: ${booking.name}\n` +
-  `Phone: ${booking.phone}\n` +
-  `Check-in: ${booking.checkin}\n` +
-  `Check-out: ${booking.checkout}\n` +
-  `Guests: ${booking.guests}\n\n` +
-  `Check the admin panel to confirm.`;
-
-  try {
-
-    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-
-      method: 'POST',
-
-      headers: {
-        'Content-Type': 'application/json'
-      },
-
-      body: JSON.stringify({
-
-        chat_id: chatId,
-
-        text: message
-
-      })
-
-    });
-
-    const result = await response.json();
-
-    if (result.ok) {
-
-      console.log('Telegram notification sent to admin.');
-
-    } else {
-
-      console.log('Telegram API rejected the message:', result.description);
-
-    }
-
-  } catch (error) {
-
-    console.log('Failed to send Telegram notification:', error.message);
 
   }
 
