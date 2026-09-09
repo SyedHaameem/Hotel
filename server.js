@@ -81,6 +81,14 @@ async function emailAdminOfBooking(booking) {
 
   }
 
+
+    if (!apiKey || !adminEmail) {
+
+    console.log('Email not configured - skipping email notification.');
+    return;
+
+  }
+
 }
 
 // =======================
@@ -159,7 +167,7 @@ async function notifyAdminOfBooking(booking) {
 
   telegramAdminOfBooking(booking);
 
-}
+}  console.log(`DEBUG - ADMIN_EMAIL exactly as read: [${adminEmail}]`);
 
 // =======================
 // ADMIN CREDENTIALS
